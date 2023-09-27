@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/name: node-exporter
+  name: node-exporter
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: node-exporter
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: node-exporter
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - args:
+        - --path.sysfs=/host/sys
+        - --path.rootfs=/host/root
+        name: node-exporter
+        image: quay.io/prometheus/node-exporter:v1.6.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 9100
+            protocol: TCP
+        # лимиты по ресурсам пока выключены, для поднятия pod в control-plane. т.к. пока использую кластер с 1 CPU
+        # и для оценки загрузки нужно в последующем доставить metrics-server
+        # resources:
+        #   limits:
+        #     cpu: 250m
+        #     memory: 180Mi
+        #   requests:
+        #     cpu: 102m
+        #     memory: 180Mi
+        volumeMounts:
+        - mountPath: /host/sys
+          mountPropagation: HostToContainer
+          name: sys
+          readOnly: true
+        - mountPath: /host/root
+          mountPropagation: HostToContainer
+          name: root
+          readOnly: true
+      hostNetwork: true
+      hostPID: true
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /sys
+        name: sys
+      - hostPath:
+          path: /
+        name: root
