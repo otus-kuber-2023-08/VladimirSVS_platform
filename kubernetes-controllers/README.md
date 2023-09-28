@@ -391,8 +391,8 @@
       strategy:
         type: RollingUpdate
         rollingUpdate:
-            maxUnavailable: 3
-            maxSurge: 6
+            maxUnavailable: 0
+            maxSurge: 3
     ```
     Поведение при обновлении версии сервиса
 
@@ -406,56 +406,56 @@
 
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice
     NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-55bc57cbf7-kntlc   1/1     Running   0          11s
-    paymentservice-55bc57cbf7-lff68   1/1     Running   0          11s
-    paymentservice-55bc57cbf7-snbjd   1/1     Running   0          11s
+    paymentservice-55bc57cbf7-9sc6z   1/1     Running   0          2m48s
+    paymentservice-55bc57cbf7-h6qpk   1/1     Running   0          2m48s
+    paymentservice-55bc57cbf7-k5fh4   1/1     Running   0          2m48s
 
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice -o json | jq '.items[0:3][].spec.containers[0].image'
     "svs123/paymentservice:0.0.1"
     "svs123/paymentservice:0.0.1"
     "svs123/paymentservice:0.0.1"
 
-    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl apply -f paymentservice-deployment-bg.yaml | kubectl get pods -l app=paymentservice -w
+    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl apply -f paymentservice-deployment-bg.yaml | kubectl get po -l app=paymentservice -w
     NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-55bc57cbf7-kntlc   1/1     Running   0          94s
-    paymentservice-55bc57cbf7-lff68   1/1     Running   0          94s
-    paymentservice-55bc57cbf7-snbjd   1/1     Running   0          94s
-    paymentservice-6bc8799b86-clqz4   0/1     Pending   0          0s
-    paymentservice-6bc8799b86-clqz4   0/1     Pending   0          0s
-    paymentservice-6bc8799b86-72zwk   0/1     Pending   0          0s
-    paymentservice-6bc8799b86-c29wg   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-kntlc   1/1     Terminating   0          94s
-    paymentservice-55bc57cbf7-snbjd   1/1     Terminating   0          94s
-    paymentservice-55bc57cbf7-lff68   1/1     Terminating   0          94s
-    paymentservice-6bc8799b86-c29wg   0/1     Pending       0          0s
-    paymentservice-6bc8799b86-72zwk   0/1     Pending       0          0s
-    paymentservice-6bc8799b86-clqz4   0/1     ContainerCreating   0          0s
-    paymentservice-6bc8799b86-72zwk   0/1     ContainerCreating   0          1s
-    paymentservice-6bc8799b86-c29wg   0/1     ContainerCreating   0          1s
-    paymentservice-6bc8799b86-c29wg   0/1     Running             0          2s
-    paymentservice-6bc8799b86-clqz4   0/1     Running             0          2s
-    paymentservice-6bc8799b86-72zwk   0/1     Running             0          2s
-    paymentservice-6bc8799b86-c29wg   1/1     Running             0          3s
-    paymentservice-6bc8799b86-clqz4   1/1     Running             0          3s
-    paymentservice-6bc8799b86-72zwk   1/1     Running             0          3s
-    paymentservice-55bc57cbf7-lff68   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-snbjd   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-lff68   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-lff68   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-lff68   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-kntlc   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-snbjd   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-snbjd   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-snbjd   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-kntlc   0/1     Terminating         0          2m6s
-    paymentservice-55bc57cbf7-kntlc   0/1     Terminating         0          2m6s
-    paymentservice-55bc57cbf7-kntlc   0/1     Terminating         0          2m6s
+    paymentservice-55bc57cbf7-9sc6z   1/1     Running   0          3m54s
+    paymentservice-55bc57cbf7-h6qpk   1/1     Running   0          3m54s
+    paymentservice-55bc57cbf7-k5fh4   1/1     Running   0          3m54s
+    paymentservice-6bc8799b86-zw4qj   0/1     Pending   0          0s
+    paymentservice-6bc8799b86-mxgtc   0/1     Pending   0          0s
+    paymentservice-6bc8799b86-zw4qj   0/1     Pending   0          0s
+    paymentservice-6bc8799b86-4fpwx   0/1     Pending   0          0s
+    paymentservice-6bc8799b86-4fpwx   0/1     Pending   0          0s
+    paymentservice-6bc8799b86-mxgtc   0/1     Pending   0          0s
+    paymentservice-6bc8799b86-zw4qj   0/1     ContainerCreating   0          0s
+    paymentservice-6bc8799b86-4fpwx   0/1     ContainerCreating   0          0s
+    paymentservice-6bc8799b86-mxgtc   0/1     ContainerCreating   0          0s
+    paymentservice-6bc8799b86-zw4qj   0/1     Running             0          2s
+    paymentservice-6bc8799b86-4fpwx   0/1     Running             0          2s
+    paymentservice-6bc8799b86-mxgtc   0/1     Running             0          2s
+    paymentservice-6bc8799b86-zw4qj   1/1     Running             0          3s
+    paymentservice-55bc57cbf7-9sc6z   1/1     Terminating         0          3m57s
+    paymentservice-6bc8799b86-4fpwx   1/1     Running             0          3s
+    paymentservice-55bc57cbf7-h6qpk   1/1     Terminating         0          3m57s
+    paymentservice-6bc8799b86-mxgtc   1/1     Running             0          3s
+    paymentservice-55bc57cbf7-k5fh4   1/1     Terminating         0          3m58s
+    paymentservice-55bc57cbf7-9sc6z   0/1     Terminating         0          4m27s
+    paymentservice-55bc57cbf7-h6qpk   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-k5fh4   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-9sc6z   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-9sc6z   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-9sc6z   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-k5fh4   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-k5fh4   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-k5fh4   0/1     Terminating         0          4m28s
+    paymentservice-55bc57cbf7-h6qpk   0/1     Terminating         0          4m29s
+    paymentservice-55bc57cbf7-h6qpk   0/1     Terminating         0          4m29s
+    paymentservice-55bc57cbf7-h6qpk   0/1     Terminating         0          4m29s
 
-    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ $ kubectget po -l app=paymentservice
+    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice
     NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-6bc8799b86-72zwk   1/1     Running   0          58s
-    paymentservice-6bc8799b86-c29wg   1/1     Running   0          58s
-    paymentservice-6bc8799b86-clqz4   1/1     Running   0          58s
+    paymentservice-6bc8799b86-4fpwx   1/1     Running   0          61s
+    paymentservice-6bc8799b86-mxgtc   1/1     Running   0          61s
+    paymentservice-6bc8799b86-zw4qj   1/1     Running   0          61s
 
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice -o json | jq '.items[0:3][].spec.containers[0].image'
     "svs123/paymentservice:0.0.2"
@@ -472,37 +472,15 @@
         type: RollingUpdate
         rollingUpdate:
           maxUnavailable: 1
-          maxSurge: 3
+          maxSurge: 0
     ```
     Пример обновления версии приложения
     ```
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl apply -f paymentservice-deployment-reverse.yaml | kubectl get pods -l app=paymentservice -w
     NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-55bc57cbf7-z5pp6   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-z5pp6   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-z5pp6   0/1     ContainerCreating   0          0s
-    paymentservice-55bc57cbf7-pz2rd   0/1     ContainerCreating   0          0s
-    paymentservice-55bc57cbf7-4p7bb   0/1     ContainerCreating   0          0s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Running             0          2s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Running             0          2s
-    paymentservice-55bc57cbf7-z5pp6   0/1     Running             0          2s
-    paymentservice-55bc57cbf7-pz2rd   1/1     Running             0          3s
-    paymentservice-55bc57cbf7-4p7bb   1/1     Running             0          3s
-    paymentservice-55bc57cbf7-z5pp6   1/1     Running             0          4s
-
-    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get deployments paymentservice
-    NAME             READY   UP-TO-DATE   AVAILABLE   AGE
-    paymentservice   3/3     3            3           15s
-
-    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ $ kubect get po -l app=paymentservice
-    NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-55bc57cbf7-4p7bb   1/1     Running   0          21s
-    paymentservice-55bc57cbf7-pz2rd   1/1     Running   0          21s
-    paymentservice-55bc57cbf7-z5pp6   1/1     Running   0          21s
+    paymentservice-55bc57cbf7-2jbwn   1/1     Running   0          100s
+    paymentservice-55bc57cbf7-ltjxb   1/1     Running   0          100s
+    paymentservice-55bc57cbf7-pvdnv   1/1     Running   0          100s
 
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice -o json | jq '.items[0:3][].spec.containers[0].image'
     "svs123/paymentservice:0.0.1"
@@ -511,45 +489,49 @@
 
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl apply -f paymentservice-deployment-reverse.yaml | kubectl get pods -l app=paymentservice -w
     NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-55bc57cbf7-4p7bb   1/1     Running   0          94s
-    paymentservice-55bc57cbf7-pz2rd   1/1     Running   0          94s
-    paymentservice-55bc57cbf7-z5pp6   1/1     Running   0          94s
-    paymentservice-6bc8799b86-dqpcj   0/1     Pending   0          0s
-    paymentservice-6bc8799b86-dqpcj   0/1     Pending   0          0s
-    paymentservice-6bc8799b86-hfpx7   0/1     Pending   0          0s
-    paymentservice-6bc8799b86-d9cgq   0/1     Pending   0          0s
-    paymentservice-55bc57cbf7-pz2rd   1/1     Terminating   0          94s
-    paymentservice-6bc8799b86-d9cgq   0/1     Pending       0          0s
-    paymentservice-6bc8799b86-hfpx7   0/1     Pending       0          0s
-    paymentservice-6bc8799b86-dqpcj   0/1     ContainerCreating   0          0s
-    paymentservice-6bc8799b86-hfpx7   0/1     ContainerCreating   0          0s
-    paymentservice-6bc8799b86-d9cgq   0/1     ContainerCreating   0          0s
-    paymentservice-6bc8799b86-hfpx7   0/1     Running             0          2s
-    paymentservice-6bc8799b86-dqpcj   0/1     Running             0          2s
-    paymentservice-6bc8799b86-dqpcj   1/1     Running             0          2s
-    paymentservice-6bc8799b86-d9cgq   0/1     Running             0          2s
-    paymentservice-55bc57cbf7-z5pp6   1/1     Terminating         0          97s
-    paymentservice-6bc8799b86-hfpx7   1/1     Running             0          3s
-    paymentservice-55bc57cbf7-4p7bb   1/1     Terminating         0          97s
-    paymentservice-6bc8799b86-d9cgq   1/1     Running             0          3s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Terminating         0          2m4s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Terminating         0          2m4s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-pz2rd   0/1     Terminating         0          2m5s
-    paymentservice-55bc57cbf7-z5pp6   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-z5pp6   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-z5pp6   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-z5pp6   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Terminating         0          2m7s
-    paymentservice-55bc57cbf7-4p7bb   0/1     Terminating         0          2m7s
+    paymentservice-55bc57cbf7-2jbwn   1/1     Running   0          113s
+    paymentservice-55bc57cbf7-ltjxb   1/1     Running   0          113s
+    paymentservice-55bc57cbf7-pvdnv   1/1     Running   0          113s
+    paymentservice-55bc57cbf7-ltjxb   1/1     Terminating   0          113s
+    paymentservice-6bc8799b86-9c46x   0/1     Pending       0          0s
+    paymentservice-6bc8799b86-9c46x   0/1     Pending       0          0s
+    paymentservice-6bc8799b86-9c46x   0/1     ContainerCreating   0          0s
+    paymentservice-6bc8799b86-9c46x   0/1     Running             0          1s
+    paymentservice-6bc8799b86-9c46x   1/1     Running             0          2s
+    paymentservice-55bc57cbf7-2jbwn   1/1     Terminating         0          115s
+    paymentservice-6bc8799b86-9tkhw   0/1     Pending             0          0s
+    paymentservice-6bc8799b86-9tkhw   0/1     Pending             0          0s
+    paymentservice-6bc8799b86-9tkhw   0/1     ContainerCreating   0          0s
+    paymentservice-6bc8799b86-9tkhw   0/1     Running             0          2s
+    paymentservice-6bc8799b86-9tkhw   1/1     Running             0          3s
+    paymentservice-55bc57cbf7-pvdnv   1/1     Terminating         0          118s
+    paymentservice-6bc8799b86-hv6fx   0/1     Pending             0          0s
+    paymentservice-6bc8799b86-hv6fx   0/1     Pending             0          0s
+    paymentservice-6bc8799b86-hv6fx   0/1     ContainerCreating   0          0s
+    paymentservice-6bc8799b86-hv6fx   0/1     Running             0          1s
+    paymentservice-6bc8799b86-hv6fx   1/1     Running             0          1s
+    paymentservice-55bc57cbf7-ltjxb   0/1     Terminating         0          2m23s
+    paymentservice-55bc57cbf7-ltjxb   0/1     Terminating         0          2m24s
+    paymentservice-55bc57cbf7-ltjxb   0/1     Terminating         0          2m24s
+    paymentservice-55bc57cbf7-ltjxb   0/1     Terminating         0          2m24s
+    paymentservice-55bc57cbf7-2jbwn   0/1     Terminating         0          2m25s
+    paymentservice-55bc57cbf7-2jbwn   0/1     Terminating         0          2m26s
+    paymentservice-55bc57cbf7-2jbwn   0/1     Terminating         0          2m26s
+    paymentservice-55bc57cbf7-2jbwn   0/1     Terminating         0          2m26s
+    paymentservice-55bc57cbf7-pvdnv   0/1     Terminating         0          2m28s
+    paymentservice-55bc57cbf7-pvdnv   0/1     Terminating         0          2m28s
+    paymentservice-55bc57cbf7-pvdnv   0/1     Terminating         0          2m28s
+    paymentservice-55bc57cbf7-pvdnv   0/1     Terminating         0          2m28s
 
-    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ $ kubectget po -l app=paymentservice
+    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get deployments paymentservice
+    NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+    paymentservice   3/3     3            3           15s
+
+    ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice
     NAME                              READY   STATUS    RESTARTS   AGE
-    paymentservice-6bc8799b86-d9cgq   1/1     Running   0          77s
-    paymentservice-6bc8799b86-dqpcj   1/1     Running   0          77s
-    paymentservice-6bc8799b86-hfpx7   1/1     Running   0          77s
+    paymentservice-6bc8799b86-9c46x   1/1     Running   0          59s
+    paymentservice-6bc8799b86-9tkhw   1/1     Running   0          57s
+    paymentservice-6bc8799b86-hv6fx   1/1     Running   0          54s
 
     ~/VladimirSVS_platform/kubernetes-controllers(kubernetes-controllers)$ kubectl get po -l app=paymentservice -o json | jq '.items[0:3][].spec.containers[0].image'
     "svs123/paymentservice:0.0.2"
